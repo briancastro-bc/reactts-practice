@@ -1,20 +1,27 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { 
   FC, 
   useRef,
   useState,
-  MouseEvent, 
+  MouseEvent,
+  ChangeEvent,
 } from 'react';
 
 type InputProps = object & {
   type?: string;
   label: string;
   placeholder: string;
+  onChange?: (value: any | null) => void;
+  value?: any;
+  name: string;
 };
 
 const Input: FC<InputProps> = ({
   label,
   placeholder,
   type = 'text',
+  value,
+  onChange,
 }) => {
   if (!label || !placeholder) {
     throw new Error('Some props are required');
@@ -42,6 +49,14 @@ const Input: FC<InputProps> = ({
     });
   };
 
+  const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault()
+    e.stopPropagation();
+
+    const value = e?.target?.value ?? null;
+    onChange(value);
+  };
+
   return (
     <div className='flex flex-col gap-y-2'>
       <label className={`relative flex flex-col px-6 py-3 gap-y-1 rounded-lg border-2 ${focus ? 'border-blue-700' : 'border-gray-400'}`}>
@@ -54,7 +69,9 @@ const Input: FC<InputProps> = ({
           type={type}
           placeholder={placeholder}
           onFocus={() => setFocus(true)}
-          onBlur={() => setFocus(false)} />
+          onBlur={() => setFocus(false)} 
+          onChange={handleOnChange}
+          value={value} />
         {type === 'password' && (
           <span 
             onClick={handleShowPassword}

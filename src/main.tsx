@@ -1,4 +1,7 @@
-import { StrictMode, } from 'react'
+import { 
+  Suspense,
+  StrictMode, 
+} from 'react'
 import { createRoot, } from 'react-dom/client'
 
 import './index.css';
@@ -15,7 +18,9 @@ function bootstrap(): void {
   createRoot(rootElement!)
     .render(
       <StrictMode>
-        <App />
+        <Suspense fallback={<p>Loading...</p>}>
+          <App />
+        </Suspense>
       </StrictMode>
     );
 }

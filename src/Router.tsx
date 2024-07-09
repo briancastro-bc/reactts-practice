@@ -26,6 +26,13 @@ const routes: Array<RouteObject> = [
         Component: lazy(
           () => import('./apps/Login/pages/Login'),
         ),
+      },
+      {
+        id: 'register',
+        path: 'signup',
+        Component: lazy(
+          () => import('./apps/Signup/pages/Signup'),
+        ),
       }
     ]
   },
