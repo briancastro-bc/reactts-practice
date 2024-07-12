@@ -1,50 +1,50 @@
-import { FC, MouseEvent, useState, } from 'react';
+import { 
+  FC, 
+  useRef, 
+  useState, 
+} from 'react';
+import { useSnackbar, } from 'notistack';
+import { useForm, } from 'react-hook-form';
+import { useNavigate, } from 'react-router-dom';
 
 import Card from '@Shared/Components/Card';
 import Input from '@Shared/Components/Input';
 import Button from '@Shared/Components/Button';
 
+import { User } from 'src/contexts/shared/domain/User';
+
 type SignupProps = object;
 
 const Signup: FC<SignupProps> = () => {
+  const navigate = useNavigate();
+  const snackbarRef = useRef<string | number | null>(null);
+  
+  const {
+    closeSnackbar,
+    enqueueSnackbar,
+  } = useSnackbar();
 
-  const [userData, setUserData,] = useState<{
-    name: string | null;
-    email: string | null;
-    password: string | null;
-  } | null>(null);
+  const {
+    register,
+    handleSubmit,
+    formState: { isValid, },
+  } = useForm<Pick<User, 'email' | 'name' | 'password'>>({
+    defaultValues: {
+      email: '',
+      name: '',
+      password: '',
+    },
+    mode: 'all',
+    reValidateMode: 'onChange',
+  });
+  
   const [loading, setLoading,] = useState<boolean>(false);
 
-  const handleInputName = (value: string) => {
-    setUserData((previousState)  => ({
-      ...previousState,
-      name: value,
-    }));
-  };
-
-  const handleInputEmail = (value: unknown) => {
-    setUserData((previousState)  => ({
-      ...previousState,
-      email: value,
-    }));
-  };
-  
-  const handleInputPassword = (value: unknown) => {
-    setUserData((previousState)  => ({
-      ...previousState,
-      password: value,
-    }));
-  };
-
-  const onSubmit = async (event: MouseEvent) => {
-    event.preventDefault();
-    event.stopPropagation();
+  const onSubmit = async (data: Pick<User, 'name' | 'email' | 'password'>) => {
     setLoading(true);
 
-    // userData = name, email, password
-    console.log('user data', userData);
     try {
-      const body = JSON.stringify(userData);
+      const body = JSON.stringify(data);
 
       const response = await fetch('http://localhost:3000/auth/signup', { 
         method: 'POST',
@@ -54,10 +54,31 @@ const Signup: FC<SignupProps> = () => {
         body,
       });
   
-      const data = await response.json();
-      console.log('response', data);
+      const result = await response.json();
+      if ('success' in result && !result.success) {
+        const { message, } = result;
+
+        if (snackbarRef.current) 
+          closeSnackbar(snackbarRef.current);
+
+        snackbarRef.current = enqueueSnackbar(message ? message : 'Hubo en el servidor. Reintente', {
+          variant: 'error',
+        });
+        return;
+      }
+
+      if (snackbarRef.current)
+        closeSnackbar(snackbarRef.current);
+
+      snackbarRef.current = enqueueSnackbar('El usuario se ha registrado');
+      navigate('/login');
     } catch (err) {
-      console.error(err);
+      if (snackbarRef.current)
+        closeSnackbar(snackbarRef.current)
+
+      snackbarRef.current = enqueueSnackbar('Ocurrio un error inesperado', {
+        variant: 'error',
+      });
     } finally {
       setLoading(false);
     }
@@ -73,24 +94,25 @@ const Signup: FC<SignupProps> = () => {
               title='Registrese'>
               <Input
                 name='name'
+                register={register('name')}
                 label='Nombre completo'
-                placeholder='Ej. Pepe'
-                onChange={handleInputName} />
+                placeholder='Ej. Pepe'/>
               <Input
-                type="email"
                 name='email'
+                register={register('email')}
+                type="email"
                 label='Correo electronico'
-                placeholder='example@mail.com'
-                onChange={handleInputEmail} />
+                placeholder='example@mail.com'/>
               <Input
-                type='password'
                 name='password'
+                register={register('password')}
+                type='password'
                 label='Contraseña'
-                placeholder='- - - - - - - -'
-                onChange={handleInputPassword} />
+                placeholder='- - - - - - - -'/>
               <Button
-                onClick={(e) => onSubmit(e)}
-                disabled={!userData?.email || !userData?.name || !userData?.password}>
+                loading={loading}
+                onClick={handleSubmit(onSubmit)}
+                disabled={!isValid || loading}>
                 Registrarme
               </Button>
             </Card>

@@ -1,5 +1,5 @@
 import { lazy, } from 'react';
-import { createBrowserRouter, RouteObject, } from 'react-router-dom';
+import { createBrowserRouter, redirect, RouteObject, } from 'react-router-dom';
 
 import RootLayout from './apps/Root/RootLayout';
 
@@ -12,17 +12,21 @@ const routes: Array<RouteObject> = [
       {
         id: 'home',
         path: '',
-        element: <div className='p-4'>
-          <button
-            onClick={() => window.location.href = '/login'} 
-            className='py-2 px-4 bg-red-500'>
-            Ir a la ruta login
-          </button>
-        </div>
+        Component: lazy(
+          () => import('./apps/Home/pages/Home'),
+        ),
       },
       {
         id: 'login',
         path: 'login',
+        loader: () => {
+          const storedToken = localStorage.getItem('user_token');
+          if (storedToken) {
+            return redirect('/');
+          }
+
+          return true
+        },
         Component: lazy(
           () => import('./apps/Login/pages/Login'),
         ),
@@ -30,11 +34,34 @@ const routes: Array<RouteObject> = [
       {
         id: 'register',
         path: 'signup',
+        loader: () => {
+          const storedToken = localStorage.getItem('user_token');
+          if (storedToken) {
+            return redirect('/');
+          }
+          
+          return true;
+        },
         Component: lazy(
           () => import('./apps/Signup/pages/Signup'),
         ),
-      }
-    ]
+      },
+      {
+        id: 'admin',
+        path: 'dashboard',
+        loader: () => {
+          const storedToken = localStorage.getItem('user_token');
+          if (!storedToken) {
+            return redirect('/login');
+          }
+
+          return true;
+        },
+        Component: lazy(
+          () => import('./apps/Home/pages/Home'),
+        ),
+      },
+    ],
   },
 ];
 
