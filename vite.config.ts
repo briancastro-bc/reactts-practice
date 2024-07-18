@@ -8,6 +8,7 @@ export default defineConfig({
   plugins: [react()],
   resolve: {
     alias: {
+      '@contexts': path.resolve(__dirname, './src/contexts/'),
       '@Shared': path.resolve(__dirname, './src/apps/Shared'),
     },
   },

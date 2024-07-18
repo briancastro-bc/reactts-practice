@@ -1,26 +1,47 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { FC, useEffect, useState, } from 'react';
 
+import { Hotel } from '@contexts/shared/domain/models';
+
 type HomeProps = object;
 
 const Home: FC<HomeProps> = () => {
-  const [token, setToken,] = useState<string | null>(null);
+  const [hotels, setHotels,] = useState<Array<Hotel>>([]);
+  const [loading, setLoading,] = useState<boolean>(false);
 
   useEffect(() => {
-    const storedToken = window.localStorage.getItem('user_token');
-    setToken(storedToken);
+    setLoading(true);
+    const getAllHotels = async () => {
+      const result = await fetch('http://localhost:3000/hotels', {
+        method: 'GET',
+      });
+
+      const data = await result.json();
+      const hotels = data?.data;
+      return hotels;
+    };
+
+    getAllHotels()
+      .then(setHotels)
+      .catch(err => console.error(err))
+      .finally(() => setLoading(false));
+
   }, []);
 
   return (
     <div className='p-4'>
-      {token && (
-        <p>Tienes una sesion iniciada</p>
+      {loading && (
+        <p>Estamos trayendo los hoteles</p>
       )}
-      <button
-        onClick={() => window.location.href = '/login'}
-        className='py-2 px-4 bg-red-500'>
-        Ir a la ruta login
-      </button>
+      {!loading && hotels && hotels?.length > 0 && (
+        <ul>
+          {hotels?.map(hotel => (
+            <li key={hotel.id}>
+              {hotel.name}
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 };

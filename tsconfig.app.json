@@ -9,6 +9,7 @@
     "skipLibCheck": true,
     "baseUrl": "./",
     "paths": {
+      "@contexts/*": ["./src/contexts/*"],
       "@Shared/*": ["./src/apps/Shared/*"],
     },
 
