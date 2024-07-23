@@ -9,11 +9,14 @@
     "skipLibCheck": true,
     "baseUrl": "./",
     "paths": {
+      "@ioc/*": ["./src/ioc/*"],
+      "@state/*": ["./src/apps/state/*"],
       "@contexts/*": ["./src/contexts/*"],
       "@Shared/*": ["./src/apps/Shared/*"],
     },
 
     /* Bundler mode */
+    "noImplicitAny": false,
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
@@ -21,6 +24,9 @@
     "moduleDetection": "force",
     "noEmit": true,
     "jsx": "react-jsx",
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "types": ["reflect-metadata"],
 
     /* Linting */
     "strict": true,

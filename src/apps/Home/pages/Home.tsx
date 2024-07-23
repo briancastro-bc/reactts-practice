@@ -1,7 +1,16 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { FC, useEffect, useState, } from 'react';
+import { 
+  FC, 
+  useState, 
+  useEffect, 
+  useCallback,
+} from 'react';
+import { useService, } from '@redtea/react-inversify';
 
 import { Hotel } from '@contexts/shared/domain/models';
+import { HttpRepository } from '@contexts/shared/domain/repositories/HttpRepository';
+
+import HotelCard from './HotelCard/HotelCard';
 
 type HomeProps = object;
 
@@ -9,40 +18,36 @@ const Home: FC<HomeProps> = () => {
   const [hotels, setHotels,] = useState<Array<Hotel>>([]);
   const [loading, setLoading,] = useState<boolean>(false);
 
+  const fetchRepository = useService<HttpRepository>('Http');
+
+  const getAllHotels: () => Promise<Array<Hotel>> = useCallback(async () => {
+    const result = await fetchRepository.get<Array<Hotel>>('/hotels');
+    return result.data;
+  }, [fetchRepository,]);
+
   useEffect(() => {
     setLoading(true);
-    const getAllHotels = async () => {
-      const result = await fetch('http://localhost:3000/hotels', {
-        method: 'GET',
-      });
-
-      const data = await result.json();
-      const hotels = data?.data;
-      return hotels;
-    };
 
     getAllHotels()
       .then(setHotels)
       .catch(err => console.error(err))
       .finally(() => setLoading(false));
 
-  }, []);
+  }, [getAllHotels]);
 
   return (
-    <div className='p-4'>
-      {loading && (
-        <p>Estamos trayendo los hoteles</p>
-      )}
-      {!loading && hotels && hotels?.length > 0 && (
-        <ul>
-          {hotels?.map(hotel => (
-            <li key={hotel.id}>
-              {hotel.name}
-            </li>
-          ))}
-        </ul>
-      )}
-    </div>
+    <section className='w-full min-h-screen h-full overflow-hidden'>
+      <div className='max-w-[1620px] py-6 mx-auto flex items-center gap-6'>
+        {loading && (
+          <p>Cargando hoteles...</p>
+        )}
+        {!loading && hotels && hotels?.length > 0 && hotels?.map(hotel => (
+          <HotelCard 
+            key={hotel?.id} 
+            hotel={{...hotel}}/>
+        ))}
+      </div>
+    </section>
   );
 };
 

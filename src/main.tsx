@@ -1,3 +1,4 @@
+import 'reflect-metadata';
 import { 
   Suspense,
   StrictMode, 
@@ -6,6 +7,7 @@ import { createRoot, } from 'react-dom/client'
 
 import './index.css';
 import App from './App';
+import { RecoilRoot } from 'recoil';
 
 /**
  * 
@@ -19,7 +21,9 @@ function bootstrap(): void {
     .render(
       <StrictMode>
         <Suspense fallback={<p>Loading...</p>}>
-          <App />
+          <RecoilRoot>
+            <App />
+          </RecoilRoot>
         </Suspense>
       </StrictMode>
     );
