@@ -15,7 +15,7 @@ import { Context, } from '@redtea/react-inversify';
 
 import { container, } from '@ioc/inversify';
 
-import { User } from '@contexts/shared/domain/User';
+import { User } from '@contexts/shared/domain/models';
 import { HttpRepository } from '@contexts/shared/domain/repositories/HttpRepository';
 
 import { currentUserState, } from '@state/atoms';
@@ -28,38 +28,37 @@ type AppProps = object;
 
 const App: FC<AppProps> = () => {
 
-  const setCurrentUser = useSetRecoilState(currentUserState);
+  // const setCurrentUser = useSetRecoilState(currentUserState);
 
-  const fetchRepository = container.get<HttpRepository>('Http');
+  // const fetchRepository = container.get<HttpRepository>('Http');
 
-  const getUserInfo: () => Promise<User> = useCallback(async () => {
-    const result = await fetchRepository
-      .get<User>('/users/userinfo', {
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('user_token')}`,
-        },
-      });
-    console.log('result from', result);
-    const user = result?.data;
-    if (!user) return null;
+  // const getUserInfo: () => Promise<User> = useCallback(async () => {
+  //   const result = await fetchRepository
+  //     .get<User>('/users/userinfo', {
+  //       headers: {
+  //         'Authorization': `Bearer ${localStorage.getItem('user_token')}`,
+  //       },
+  //     });
+  //   const user = result?.data;
+  //   if (!user) return null;
 
-    console.log('user', user);
-    return user;
-  }, [fetchRepository]);
+  //   console.log('user', user);
+  //   return user;
+  // }, [fetchRepository]);
 
-  useEffect(() => {
-    let isSubscribed = true;
+  // useEffect(() => {
+  //   let isSubscribed = true;
 
-    if (isSubscribed)
-      getUserInfo()
-        .then(setCurrentUser)
-        .catch((err) => console.log(err))
-        .finally();
+  //   if (isSubscribed)
+  //     getUserInfo()
+  //       .then(setCurrentUser)
+  //       .catch((err) => console.log(err))
+  //       .finally();
 
-    return () => {
-      isSubscribed = false;
-    }
-  }, [getUserInfo,]);
+  //   return () => {
+  //     isSubscribed = false;
+  //   }
+  // }, [getUserInfo,]);
 
   return (
     <Context.Provider value={container}>

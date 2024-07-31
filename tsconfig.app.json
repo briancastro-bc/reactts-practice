@@ -9,6 +9,7 @@
     "skipLibCheck": true,
     "baseUrl": "./",
     "paths": {
+      "@apps/*": ["./src/apps/*"],
       "@ioc/*": ["./src/ioc/*"],
       "@state/*": ["./src/apps/state/*"],
       "@contexts/*": ["./src/contexts/*"],

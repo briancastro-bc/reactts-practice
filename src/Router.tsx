@@ -17,16 +17,23 @@ const routes: Array<RouteObject> = [
         ),
       },
       {
+        id: 'searchResults',
+        path: 'results',
+        Component: lazy(
+          () => import('./apps/SearchResult/pages/SearchResult'),
+        ),
+      },
+      {
         id: 'login',
         path: 'login',
-        loader: () => {
-          const storedToken = localStorage.getItem('user_token');
-          if (storedToken) {
-            return redirect('/');
-          }
+        // loader: () => {
+        //   const storedToken = localStorage.getItem('user_token');
+        //   if (storedToken) {
+        //     return redirect('/');
+        //   }
 
-          return true
-        },
+        //   return true
+        // },
         Component: lazy(
           () => import('./apps/Login/pages/Login'),
         ),
@@ -34,14 +41,14 @@ const routes: Array<RouteObject> = [
       {
         id: 'register',
         path: 'signup',
-        loader: () => {
-          const storedToken = localStorage.getItem('user_token');
-          if (storedToken) {
-            return redirect('/');
-          }
+        // loader: () => {
+        //   const storedToken = localStorage.getItem('user_token');
+        //   if (storedToken) {
+        //     return redirect('/');
+        //   }
           
-          return true;
-        },
+        //   return true;
+        // },
         Component: lazy(
           () => import('./apps/Signup/pages/Signup'),
         ),
@@ -49,14 +56,14 @@ const routes: Array<RouteObject> = [
       {
         id: 'admin',
         path: 'dashboard',
-        loader: () => {
-          const storedToken = localStorage.getItem('user_token');
-          if (!storedToken) {
-            return redirect('/login');
-          }
+        // loader: () => {
+        //   const storedToken = localStorage.getItem('user_token');
+        //   if (!storedToken) {
+        //     return redirect('/login');
+        //   }
 
-          return true;
-        },
+        //   return true;
+        // },
         Component: lazy(
           () => import('./apps/Home/pages/Home'),
         ),

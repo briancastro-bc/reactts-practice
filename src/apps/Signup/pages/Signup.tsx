@@ -11,7 +11,7 @@ import Card from '@Shared/Components/Card';
 import Input from '@Shared/Components/Input';
 import Button from '@Shared/Components/Button';
 
-import { User } from 'src/contexts/shared/domain/User';
+import { User } from '@contexts/shared/domain/models';
 
 type SignupProps = object;
 
