@@ -16,7 +16,7 @@ const RootLayout: FC<RootLayoutProps> = () => {
           position: 'relative',
           top: navbarRef?.current?.clientHeight ?? '70px',
         }} 
-        className='min-h-screen'>
+        className={`min-h-[calc(100vh-${navbarRef?.current?.clientHeight ?? 70}px)] h-full`}>
         <Outlet/>
       </main>
     </>

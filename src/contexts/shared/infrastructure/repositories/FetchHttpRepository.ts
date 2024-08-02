@@ -14,6 +14,7 @@ export class FetchHttpRepository implements HttpRepository {
     params: Record<string, any> = {},
   ): Promise<Response<T> | Operation> {
     try {
+      const token = localStorage.getItem('user_token');
       const endpoint = new URL(url, this.backendUrl);
 
       const {
@@ -28,6 +29,9 @@ export class FetchHttpRepository implements HttpRepository {
         headers: {
           'Content-Type': 'application/json',
           ...(headers && {
+            ...(token && {
+              Authorization: `Bearer ${token}`
+            }),
             ...headers,
           }),
         },
@@ -49,6 +53,7 @@ export class FetchHttpRepository implements HttpRepository {
     params: Record<string, any> = {}
   ): Promise<Response<T> | Operation> {
     try {
+      const token = localStorage.getItem('user_token');
       const endpoint = new URL(url, this.backendUrl);
 
       const {
@@ -62,6 +67,9 @@ export class FetchHttpRepository implements HttpRepository {
         }),
         headers: {
           'Content-Type': 'application/json',
+            ...(token && {
+              Authorization: `Bearer ${token}`
+            }),
           ...(headers && {
             ...headers,
           }),
@@ -85,6 +93,7 @@ export class FetchHttpRepository implements HttpRepository {
     params: Record<string, any> = {},
   ): Promise<Response<T> | Operation> {
     try {
+      const token = localStorage.getItem('user_token');
       const endpoint = new URL(url, this.backendUrl);
 
       const {
@@ -98,6 +107,9 @@ export class FetchHttpRepository implements HttpRepository {
         }),
         headers: {
           'Content-Type': 'application/json',
+          ...(token && {
+            Authorization: `Bearer ${token}`
+          }),
           ...(headers && {
             ...headers,
           }),
@@ -121,6 +133,7 @@ export class FetchHttpRepository implements HttpRepository {
     params: Record<string, any> = {},
   ): Promise<Response<T> | Operation> {
     try {
+      const token = localStorage.getItem('user_token');
       const endpoint = new URL(url, this.backendUrl);
 
       const {
@@ -134,6 +147,9 @@ export class FetchHttpRepository implements HttpRepository {
         }),
         headers: {
           'Content-Type': 'application/json',
+          ...(token && {
+            Authorization: `Bearer ${token}`
+          }),
           ...(headers && {
             ...headers,
           }),
@@ -156,6 +172,7 @@ export class FetchHttpRepository implements HttpRepository {
     params: Record<string, any> = {},
   ): Promise<Response<T> | Operation> {
     try {
+      const token = localStorage.getItem('user_token');
       const endpoint = new URL(url, this.backendUrl);
 
       const {
@@ -169,6 +186,9 @@ export class FetchHttpRepository implements HttpRepository {
         }),
         headers: {
           'Content-Type': 'application/json',
+          ...(token && {
+            Authorization: `Bearer ${token}`
+          }),
           ...(headers && {
             ...headers,
           }),

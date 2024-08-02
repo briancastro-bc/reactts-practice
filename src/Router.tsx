@@ -24,6 +24,20 @@ const routes: Array<RouteObject> = [
         ),
       },
       {
+        id: 'hotel',
+        path: 'hotel/:id',
+        Component: lazy(
+          () => import('./apps/Hotel/pages/SelectedHotel'),
+        ),
+      },
+      {
+        id: 'reservation',
+        path: 'hotel/:id/reservation/:roomId',
+        Component: lazy(
+          () => import('./apps/Hotel/pages/Reservation'),
+        ),
+      },
+      {
         id: 'login',
         path: 'login',
         // loader: () => {

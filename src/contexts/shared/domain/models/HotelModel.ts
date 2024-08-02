@@ -1,3 +1,5 @@
+import { Room, } from './RoomModel';
+
 export interface Hotel {
   id: string;
   name: string;
@@ -7,6 +9,7 @@ export interface Hotel {
   city: string;
   address: string;
   raking: number;
+  Rooms?: Array<Room>;
   isActive: boolean;
   createdAt: string;
   updatedAt: string;

@@ -50,7 +50,7 @@ const Input: FC<InputProps> = ({
   };
 
   return (
-    <div className='flex flex-col gap-y-2'>
+    <div className='grow flex flex-col gap-y-2'>
       <label className={`relative flex flex-col px-6 py-3 gap-y-1 rounded-lg border-2 bg-white ${focus ? 'border-blue-700' : 'border-gray-400'}`}>
         <span className={`text-sm font-bold leading-[14px] ${focus ? 'text-blue-700' : 'text-gray-700'}`}>
           {label}

@@ -3,8 +3,10 @@ import {
   useCallback, 
   ComponentProps,
 } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import { Hotel } from '@contexts/shared/domain/models';
+
 import Button from '@Shared/Components/Button';
 
 type HotelCardProps = object & ComponentProps<'article'> & {
@@ -14,6 +16,8 @@ type HotelCardProps = object & ComponentProps<'article'> & {
 const HotelCard: FC<HotelCardProps> = ({
   hotel,
 }) => {
+  const navigate = useNavigate();
+
   const handleLimitDescription = useCallback((limit: number) => {
     if (hotel?.description?.length > limit) {
       return `${hotel?.description?.slice(0, limit)}...`;
@@ -42,7 +46,10 @@ const HotelCard: FC<HotelCardProps> = ({
             {handleLimitDescription(100)}
           </span>
           <div className='mt-4 ml-auto'>
-            <Button>
+            <Button 
+              onClick={() => navigate({
+                pathname: `/hotel/${hotel?.id}`,
+              })}>
               Ver
             </Button>
           </div>

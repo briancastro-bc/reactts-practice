@@ -11,6 +11,7 @@
     "paths": {
       "@apps/*": ["./src/apps/*"],
       "@ioc/*": ["./src/ioc/*"],
+      "@assets/*": ["./src/assets/*"],
       "@state/*": ["./src/apps/state/*"],
       "@contexts/*": ["./src/contexts/*"],
       "@Shared/*": ["./src/apps/Shared/*"],
